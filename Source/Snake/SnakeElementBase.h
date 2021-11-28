@@ -3,13 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Interactable.h"
 #include "GameFramework/Actor.h"
 #include "SnakeElementBase.generated.h"
 
 class UStaticMeshComponent;
+class ASnakeBase;
 
 UCLASS()
-class SNAKE_API ASnakeElementBase : public AActor
+class SNAKE_API ASnakeElementBase : public AActor, public IInteractable
 {
 	GENERATED_BODY()
 	
@@ -19,6 +21,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent * StaticMeshComponent;
+
+	UPROPERTY()
+	ASnakeBase * SnakeOwner;
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,4 +36,16 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void SetHeadElementType();
 	void SetHeadElementType_Implementation();
+	virtual void Interact(AActor* Actor) override;
+
+	UFUNCTION()
+	void HandleBeginOverlap(UPrimitiveComponent * OverlappedComponent,
+							AActor * OtherActor,
+							UPrimitiveComponent * OtherComponent,
+							int32 OtherBodyIndex,
+							bool bFromSweep,
+							const FHitResult &SweepResult);
+
+	UFUNCTION()
+	void ToggleCollision();
 };
