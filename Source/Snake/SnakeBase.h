@@ -21,6 +21,10 @@ UCLASS()
 class SNAKE_API ASnakeBase : public AActor
 {
 	GENERATED_BODY()
+	bool IsDirectionJustChanged;
+	int GrowSize;
+	bool NeedToTeleportHead;
+	FVector TeleportLocation;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -51,10 +55,14 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void AddSnakeElement(const int Count = 1);
+	void ChangeSnakeDirection(const EDirection NewDirection);
 	
 	UFUNCTION(BlueprintCallable)
 	void Move();
 
 	UFUNCTION()
 	void SnakeElementOverlap(ASnakeElementBase * OverlappedElement, AActor* Actor);
+	void Grow();
+	void TeleportHead(const FVector& NewLocation);
+	void IncreaseSpeed(const float XFactor);
 };

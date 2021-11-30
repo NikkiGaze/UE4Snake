@@ -1,37 +1,49 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Food.h"
+#include "Portal.h"
 
 #include "SnakeBase.h"
 
 // Sets default values
-AFood::AFood()
+APortal::APortal()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	IsInUse = false;
 }
 
 // Called when the game starts or when spawned
-void AFood::BeginPlay()
+void APortal::BeginPlay()
 {
 	Super::BeginPlay();
+	
 }
 
 // Called every frame
-void AFood::Tick(float DeltaTime)
+void APortal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 }
 
-void AFood::Interact(AActor* Actor)
+void APortal::Interact(AActor* Actor)
 {
 	const auto Snake = Cast<ASnakeBase>(Actor);
 	if (IsValid(Snake))
 	{
-		Snake->Grow();
-		this->Destroy();
+		if (Another != nullptr)
+		{
+			if (!IsInUse)
+			{
+				Snake->TeleportHead(Another->GetActorLocation());
+				Another->IsInUse = true;
+			}
+			else
+			{
+				IsInUse = false;
+			}
+		}
 	}
 }
 

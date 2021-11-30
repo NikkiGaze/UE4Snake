@@ -42,7 +42,7 @@ void APlayerPawnBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void APlayerPawnBase::CreateSnakeActor()
 {
-	SnakeActor = GetWorld()->SpawnActor<ASnakeBase>(SnakeActorClass, FTransform());
+	SnakeActor = GetWorld()->SpawnActor<ASnakeBase>(SnakeActorClass, FTransform(FVector(0, 0, 0)));
 }
 
 void APlayerPawnBase::HandlePlayerVerticalInput(const float Value)
@@ -84,6 +84,6 @@ void APlayerPawnBase::SetMovementDirection(const EDirection Direction)
 	case EDirection::Right: if (PrevDirection == EDirection::Left)  return; break;
 	}
 
-	SnakeActor->LastMovementDirection = Direction;
+	SnakeActor->ChangeSnakeDirection(Direction);
 }
 
